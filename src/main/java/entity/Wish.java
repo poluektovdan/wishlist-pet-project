@@ -1,7 +1,6 @@
 package entity;
 
 public class Wish {
-    private int wishId;
     private String wishName;
     private String wishDescription;
     private String wishLink;
@@ -18,10 +17,6 @@ public class Wish {
 
     public void setWishLink(String wishLink) {
         this.wishLink = wishLink;
-    }
-
-    public int getWishId() {
-        return wishId;
     }
 
     public String getWishName() {

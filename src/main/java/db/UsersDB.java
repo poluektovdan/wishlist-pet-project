@@ -1,7 +1,5 @@
 package db;
 
-import entity.User;
-
 import java.sql.*;
 
 public class UsersDB {
@@ -13,6 +11,7 @@ public class UsersDB {
 
     private static final String ADD_USER_QUERY = "INSERT INTO users (login, password) VALUES (?, ?);";
     private static final String GET_USER_QUERY = "SELECT * FROM users WHERE login = ? AND password = ?;";
+    private static final String FIND_USER_QUERY = "SELECT * FROM users WHERE login = ?;";
 
     private UsersDB() {
         try (Connection connection = getConnection()) {
@@ -28,12 +27,12 @@ public class UsersDB {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    public void addUser(User user) {
+    public void addUser(String login, String password) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_USER_QUERY)) {
 
-            preparedStatement.setNString(1, user.getLogin());
-            preparedStatement.setNString(2, user.getPassword());
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -52,6 +51,21 @@ public class UsersDB {
 
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            System.err.println("Ошибка при поиске пользователя: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean findUser(String login) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_QUERY)) {
+
+            preparedStatement.setString(1, login);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
