@@ -1,3 +1,4 @@
+import db.UsersDB;
 import entity.User;
 import service.command.Command;
 import service.command.imp.CommandExit;
@@ -9,18 +10,17 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
+        UsersDB instance = UsersDB.INSTANCE;
+
         List<Command> commands = new ArrayList<>(
                 List.of(CommandExit.INSTANCE));
-        List<User> users = new ArrayList<>();
-        users.add(new User(1, "admin", "admin"));
-        DefaultUserService userService = new DefaultUserService(commands, users);
+        DefaultUserService userService = new DefaultUserService(commands);
         boolean userLogined = true;
         while (userLogined) {
             try {
-                Optional<User> user = userService.login();
-                if(user.isPresent()) {
+                if(userService.login()) {
                     userLogined = false;
-                    userService.startWorkWithUser(user.get().getLogin());
+                    userService.startWorkWithUser();
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

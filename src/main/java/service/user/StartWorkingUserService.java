@@ -1,5 +1,5 @@
 package service.user;
 
 public interface StartWorkingUserService {
-    void startWorkWithUser(String username);
+    void startWorkWithUser();
 }

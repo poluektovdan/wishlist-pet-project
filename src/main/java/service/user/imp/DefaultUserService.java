@@ -1,28 +1,27 @@
 package service.user.imp;
 
+import db.UsersDB;
 import entity.User;
 import exception.UserNotFoundException;
 import service.command.Command;
 import service.user.LoginUserService;
-import service.user.SearchUserService;
 import service.user.StartWorkingUserService;
 import util.UtilInput;
 
 import java.util.List;
-import java.util.Optional;
 
-public class DefaultUserService implements StartWorkingUserService, LoginUserService, SearchUserService {
+public class DefaultUserService implements StartWorkingUserService, LoginUserService {
     private List<Command> commandList;
-    private List<User> userList;
+    private UsersDB usersDB;
 
-    public DefaultUserService(List<Command> commandList, List<User> userList) {
+    public DefaultUserService(List<Command> commandList) {
         this.commandList = commandList;
-        this.userList = userList;
+        this.usersDB = UsersDB.INSTANCE;
     }
 
     @Override
-    public void startWorkWithUser(String username) {
-        System.out.println("Привет, " + username);
+    public void startWorkWithUser() {
+        System.out.println("Привет, дорогой пользователь");
         boolean isWorking = chooseCommand();
         while (isWorking) {
             isWorking = chooseCommand();
@@ -40,26 +39,16 @@ public class DefaultUserService implements StartWorkingUserService, LoginUserSer
     }
 
     @Override
-    public Optional<User> login() {
+    public boolean login() {
         System.out.println("Введите логин");
         String login = UtilInput.getRequiredStringFromUser();
         System.out.println("Введите пароль");
         String password = UtilInput.getRequiredStringFromUser();
-        Optional<User> user = getUserByLogin(login);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return user;
+
+        if (usersDB.findUser(login,password)) {
+            return true;
         } else {
             throw new UserNotFoundException("Не верный логин или пароль");
         }
-    }
-
-    @Override
-    public Optional<User> getUserByLogin(String login) {
-        for (User user : userList) {
-            if (user.getLogin().equals(login)) {
-                return Optional.of(user);
-            }
-        }
-        return Optional.empty();
     }
 }
