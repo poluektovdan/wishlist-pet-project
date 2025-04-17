@@ -1,10 +1,13 @@
 package entity;
 
 public class Wish {
+    //связывается с вишлистом по wishId
+    private int wishId;
     private String wishName;
     private String wishDescription;
     private String wishLink;
     private WishPriority priority;
+    private int wishListId;
 
     public Wish(String wishName) {
         this.wishName = wishName;
@@ -34,4 +37,9 @@ public class Wish {
     public WishPriority getPriority() {
         return priority;
     }
+
+
+    //что будет у виша?
+    //добавить описание, добавить ссылку на виш, добавить приоритетность
+    //редактировать виш - редактировать имя, описание, ссылку, приоритетность
 }

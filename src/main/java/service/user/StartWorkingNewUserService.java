@@ -1,5 +1,5 @@
 package service.user;
 
-public interface StartWorkingUserService {
+public interface StartWorkingNewUserService {
     void startWorkWithUser();
 }

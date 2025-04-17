@@ -1,14 +1,16 @@
 package service.command.imp;
 
+import entity.User;
 import service.command.AbstractCommand;
 import service.command.Command;
-import service.user.StartWorkingUserService;
+import service.user.StartWorkingLogginedUserService;
 import util.UtilInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class CommandLoginUser extends AbstractCommand implements StartWorkingUserService {
+public class CommandLoginUser extends AbstractCommand implements StartWorkingLogginedUserService {
     public static final CommandLoginUser INSTANCE = new CommandLoginUser();
 
     private final List<Command> commandList = new ArrayList<>(
@@ -25,8 +27,9 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingUse
     @Override
     public boolean execute() {
         try {
-            if (getUserServiceDB().login()) {
-                startWorkWithUser();
+            Optional<User> user = getUserServiceDB().login();
+            if (user.isPresent()) {
+                startWorkWithUser(user.get().getLogin());
                 return false;
             }
         } catch (Exception e) {
@@ -36,7 +39,8 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingUse
     }
 
     @Override
-    public void startWorkWithUser() {
+    public void startWorkWithUser(String login) {
+        System.out.println("Привет, " + login);
         boolean isWorking = chooseCommand();
         while (isWorking) {
             isWorking = chooseCommand();

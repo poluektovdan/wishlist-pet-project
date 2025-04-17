@@ -12,7 +12,7 @@ public class CommandRegisterUser extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            if (getUserServiceDB().registerUser()) {
+            if (getUserServiceDB().registerUser().isPresent()) {
                 System.out.println("Вы успешно зарегестрированы!");
                 System.out.println("Войдите в личный кабинет");
                 CommandLoginUser.INSTANCE.execute();
