@@ -38,6 +38,16 @@ public class Wish {
         return priority;
     }
 
+    @Override
+    public String toString() {
+        return "Wish{" +
+                ", wishName='" + wishName + '\'' +
+                ", wishDescription='" + wishDescription + '\'' +
+                ", wishLink='" + wishLink + '\'' +
+                ", priority=" + priority +
+                '}';
+    }
+
 
     //что будет у виша?
     //добавить описание, добавить ссылку на виш, добавить приоритетность

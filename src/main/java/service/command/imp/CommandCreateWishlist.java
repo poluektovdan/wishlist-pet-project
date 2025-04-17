@@ -11,6 +11,7 @@ public class CommandCreateWishlist extends AbstractCommand {
 
     @Override
     public boolean execute() {
+        getWishlistServiceDB().createWishlist(getUserServiceDB().getUserId());
         return true;
     }
 }

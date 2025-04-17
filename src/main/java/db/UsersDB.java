@@ -75,4 +75,22 @@ public class UsersDB {
         }
         return false;
     }
+
+    public int findUserId(String login) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_QUERY)) {
+
+            preparedStatement.setString(1, login);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при поиске пользователя: " + e.getMessage());
+        }
+
+        return -1;
+    }
 }

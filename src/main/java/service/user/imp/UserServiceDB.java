@@ -12,6 +12,8 @@ public class UserServiceDB implements DBWorkingUserService {
     private final UsersDB usersDB = UsersDB.INSTANCE;
     public static final UserServiceDB INSTANCE = new UserServiceDB();
 
+    private int userId;
+
     private UserServiceDB() {}
 
     @Override
@@ -22,7 +24,7 @@ public class UserServiceDB implements DBWorkingUserService {
         String password = UtilInput.getRequiredStringFromUser();
 
         if (usersDB.findUser(login, password)) {
-            return Optional.of(new User(login, password));
+            return Optional.of(new User(usersDB.findUserId(login), login, password));
         } else {
             throw new UserNotFoundException("Не верный логин или пароль");
         }
@@ -39,12 +41,24 @@ public class UserServiceDB implements DBWorkingUserService {
             return Optional.empty();
         } else {
             usersDB.addUser(login, password);
-            return Optional.of(new User(login, password));
+            return Optional.of(new User(usersDB.findUserId(login), login, password));
         }
     }
 
     @Override
     public boolean getUserByLogin(String login) {
         return usersDB.findUser(login);
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public UsersDB getUsersDB() {
+        return usersDB;
     }
 }

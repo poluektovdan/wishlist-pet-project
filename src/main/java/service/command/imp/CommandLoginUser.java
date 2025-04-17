@@ -16,7 +16,8 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
     private final List<Command> commandList = new ArrayList<>(
             List.of(CommandCreateWishlist.INSTANCE,
                     CommandCreateWish.INSTANCE,
-                    CommandShowWishlist.INSTANCE,
+                    CommandShowWishlists.INSTANCE,
+                    CommandDeleteWishlist.INSTANCE,
                     CommandAddUserToFavorites.INSTANCE,
                     CommandExit.INSTANCE));
 
@@ -29,6 +30,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
         try {
             Optional<User> user = getUserServiceDB().login();
             if (user.isPresent()) {
+                getUserServiceDB().setUserId(user.get().getId());
                 startWorkWithUser(user.get().getLogin());
                 return false;
             }
