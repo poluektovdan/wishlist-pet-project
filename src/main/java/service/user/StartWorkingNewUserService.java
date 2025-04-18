@@ -1,5 +1,7 @@
 package service.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface StartWorkingNewUserService {
-    void startWorkWithUser();
+    void startWorkWithUser() throws JsonProcessingException;
 }

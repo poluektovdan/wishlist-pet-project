@@ -1,37 +1,45 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Wish {
     //связывается с вишлистом по wishId
-    private int wishId;
-    private String wishName;
-    private String wishDescription;
-    private String wishLink;
+    @JsonProperty("wish_name")
+    private String wish_name;
+    @JsonProperty("wish_description")
+    private String wish_description;
+    @JsonProperty("wish_link")
+    private String wish_link;
+    @JsonProperty("priority")
     private WishPriority priority;
-    private int wishListId;
 
-    public Wish(String wishName) {
-        this.wishName = wishName;
+    public Wish(String wish_name) {
+        this.wish_name = wish_name;
     }
 
     //описание и ссылка опциональны - добавить опции "добавить описание" и "добавить ссылку"
     public void setWishDescription(String wishDescription) {
-        this.wishDescription = wishDescription;
+        this.wish_description = wishDescription;
     }
 
     public void setWishLink(String wishLink) {
-        this.wishLink = wishLink;
+        this.wish_link = wishLink;
     }
 
     public String getWishName() {
-        return wishName;
+        return wish_name;
     }
 
     public String getWishDescription() {
-        return wishDescription;
+        return wish_description;
     }
 
     public String getWishLink() {
-        return wishLink;
+        return wish_link;
     }
 
     public WishPriority getPriority() {
@@ -41,9 +49,9 @@ public class Wish {
     @Override
     public String toString() {
         return "Wish{" +
-                ", wishName='" + wishName + '\'' +
-                ", wishDescription='" + wishDescription + '\'' +
-                ", wishLink='" + wishLink + '\'' +
+                ", wish_name='" + wish_name + '\'' +
+                ", wish_description='" + wish_description + '\'' +
+                ", wish_link='" + wish_link + '\'' +
                 ", priority=" + priority +
                 '}';
     }

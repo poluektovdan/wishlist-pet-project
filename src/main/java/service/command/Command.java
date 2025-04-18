@@ -1,8 +1,8 @@
 package service.command;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface Command {
-
-    boolean execute();
-
+    boolean execute() throws JsonProcessingException;
     String getCommandName();
 }

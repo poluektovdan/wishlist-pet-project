@@ -12,4 +12,8 @@ public enum WishPriority {
     private WishPriority(String priority) {
         this.priority = priority;
     }
+
+    public String getPriority() {
+        return priority;
+    }
 }

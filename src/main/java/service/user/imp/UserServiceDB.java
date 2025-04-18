@@ -57,8 +57,4 @@ public class UserServiceDB implements DBWorkingUserService {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-    public UsersDB getUsersDB() {
-        return usersDB;
-    }
 }

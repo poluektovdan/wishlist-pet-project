@@ -1,5 +1,6 @@
 package service.command.imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import service.command.AbstractCommand;
 
 public class CommandCreateWish extends AbstractCommand {
@@ -10,7 +11,10 @@ public class CommandCreateWish extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws JsonProcessingException {
+        int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
+        String wishName = getWishServiceDB().createWish(wishlistId);
+        getWishlistServiceDB().updateWishesInWishlist(wishlistId, wishName);
         return true;
     }
 }

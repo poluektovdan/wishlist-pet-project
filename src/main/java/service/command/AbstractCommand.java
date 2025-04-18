@@ -1,17 +1,20 @@
 package service.command;
 
 import service.user.imp.UserServiceDB;
+import service.wish.imp.WishServiceDB;
 import service.wishlist.imp.WishlistServiceDB;
 
 public abstract class AbstractCommand implements Command {
     private String title;
     private UserServiceDB userServiceDB;
     private WishlistServiceDB wishlistServiceDB;
+    private WishServiceDB wishServiceDB;
 
     protected AbstractCommand(String title) {
         this.title = title;
         this.userServiceDB = UserServiceDB.INSTANCE;
         this.wishlistServiceDB = WishlistServiceDB.INSTANCE;
+        this.wishServiceDB = WishServiceDB.INSTANCE;
     }
 
     protected UserServiceDB getUserServiceDB() {
@@ -20,6 +23,10 @@ public abstract class AbstractCommand implements Command {
 
     protected WishlistServiceDB getWishlistServiceDB() {
         return wishlistServiceDB;
+    }
+
+    protected WishServiceDB getWishServiceDB() {
+        return wishServiceDB;
     }
 
     @Override

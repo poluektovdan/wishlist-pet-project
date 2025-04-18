@@ -1,5 +1,6 @@
 package service.command.imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import entity.User;
 import service.command.AbstractCommand;
 import service.command.Command;
@@ -18,6 +19,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
                     CommandCreateWish.INSTANCE,
                     CommandShowWishlists.INSTANCE,
                     CommandDeleteWishlist.INSTANCE,
+                    CommandAddWishDescription.INSTANCE,
                     CommandAddUserToFavorites.INSTANCE,
                     CommandExit.INSTANCE));
 
@@ -41,7 +43,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
     }
 
     @Override
-    public void startWorkWithUser(String login) {
+    public void startWorkWithUser(String login) throws JsonProcessingException {
         System.out.println("Привет, " + login);
         boolean isWorking = chooseCommand();
         while (isWorking) {
@@ -49,7 +51,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
         }
     }
 
-    private boolean chooseCommand() {
+    private boolean chooseCommand() throws JsonProcessingException {
         System.out.println("Выбери команду, которую хочешь выполнить");
         for (int i = 1; i <= commandList.size(); i++) {
             System.out.printf("%s - %s%n", i, commandList.get(i - 1).getCommandName());
