@@ -17,6 +17,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
     private final List<Command> commandList = new ArrayList<>(
             List.of(CommandCreateWishlist.INSTANCE,
                     CommandCreateWish.INSTANCE,
+                    CommandEditWish.INSTANCE,
                     CommandShowWishlists.INSTANCE,
                     CommandDeleteWishlist.INSTANCE,
                     CommandAddWishDescription.INSTANCE,

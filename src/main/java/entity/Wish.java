@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Wish {
-    //связывается с вишлистом по wishId
+    //связывается с вишлистом по wishlistId
     @JsonProperty("wish_name")
     private String wish_name;
     @JsonProperty("wish_description")
@@ -21,41 +23,54 @@ public class Wish {
         this.wish_name = wish_name;
     }
 
+    public Wish() {}
+
     //описание и ссылка опциональны - добавить опции "добавить описание" и "добавить ссылку"
-    public void setWishDescription(String wishDescription) {
-        this.wish_description = wishDescription;
-    }
 
-    public void setWishLink(String wishLink) {
-        this.wish_link = wishLink;
-    }
-
-    public String getWishName() {
+    public String getWish_name() {
         return wish_name;
     }
 
-    public String getWishDescription() {
+    public void setWish_name(String wish_name) {
+        this.wish_name = wish_name;
+    }
+
+    public String getWish_description() {
         return wish_description;
     }
 
-    public String getWishLink() {
+    public void setWish_description(String wish_description) {
+        this.wish_description = wish_description;
+    }
+
+    public String getWish_link() {
         return wish_link;
+    }
+
+    public void setWish_link(String wish_link) {
+        this.wish_link = wish_link;
     }
 
     public WishPriority getPriority() {
         return priority;
     }
 
-    @Override
-    public String toString() {
-        return "Wish{" +
-                ", wish_name='" + wish_name + '\'' +
-                ", wish_description='" + wish_description + '\'' +
-                ", wish_link='" + wish_link + '\'' +
-                ", priority=" + priority +
-                '}';
+    public void setPriority(WishPriority priority) {
+        this.priority = priority;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wish wish = (Wish) o;
+        return Objects.equals(wish_name, wish.wish_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(wish_name);
+    }
 
     //что будет у виша?
     //добавить описание, добавить ссылку на виш, добавить приоритетность

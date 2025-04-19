@@ -1,9 +1,11 @@
 package service.wish;
 
+import entity.WishPriority;
+
 public interface DBAddWishService {
     String createWish(int wishlistId);
     void removeWish(int wishlistId);
-    void addPriority(int wishlistId);
+    WishPriority addPriority(int wishlistId);
     String addDescription(int wishlistId);
-    void addWishLink(int wishlistId);
+    String addWishLink(int wishlistId);
 }

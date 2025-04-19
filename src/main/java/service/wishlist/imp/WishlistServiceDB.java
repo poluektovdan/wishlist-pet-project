@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import db.WishlistsDB;
 import entity.Wish;
+import entity.WishPriority;
 import service.wishlist.DBWishlistService;
 import util.UtilInput;
 
@@ -57,8 +58,13 @@ public class WishlistServiceDB implements DBWishlistService {
         if(wishlist != null) {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
-            wishes.add(new Wish(wishName));
-            wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
+            Wish wish = new Wish(wishName);
+            if(!wishes.contains(wish)) {
+                wishes.add(wish);
+                wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
+            } else {
+                System.out.println("Такой виш уже существует");
+            }
         } else {
             wishlistsDB.updateWishesInWishlist(initializeNewWishlist(wishName), wishlistID);
         }
@@ -81,8 +87,36 @@ public class WishlistServiceDB implements DBWishlistService {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
             for(Wish wish : wishes) {
-                if(wish.getWishName().equals(wishName)) {
-                    wish.setWishDescription(description);
+                if(wish.getWish_name().equals(wishName)) {
+                    wish.setWish_description(description);
+                }
+            }
+            wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
+        }
+    }
+
+    public void updatePriorityOfWish(int wishlistID, String wishName, WishPriority priority) throws JsonProcessingException {
+        String wishlist = getWishlist(wishlistID);
+        if(wishlist != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
+            for(Wish wish : wishes) {
+                if(wish.getWish_name().equals(wishName)) {
+                    wish.setPriority(priority);
+                }
+            }
+            wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
+        }
+    }
+
+    public void updateWishLink(int wishlistID, String wishName, String wishLink) throws JsonProcessingException {
+        String wishlist = getWishlist(wishlistID);
+        if(wishlist != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
+            for(Wish wish : wishes) {
+                if(wish.getWish_name().equals(wishName)) {
+                    wish.setWish_link(wishLink);
                 }
             }
             wishlistsDB.updateWishesInWishlist(wishes, wishlistID);

@@ -16,9 +16,7 @@ public class CommandAddWishDescription extends AbstractCommand {
     public boolean execute() throws JsonProcessingException {
         int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
         String wishDescription = getWishServiceDB().addDescription(wishlistId);
-        System.out.println("Введите название желания");
-        String wishName = UtilInput.getRequiredStringFromUser();
-        getWishlistServiceDB().updateDescriptionOfWish(wishlistId, wishDescription, wishName);
+        getWishlistServiceDB().updateDescriptionOfWish(wishlistId, wishDescription, getWishServiceDB().getCurrentWishName());
         return true;
     }
 }

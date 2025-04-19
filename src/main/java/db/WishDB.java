@@ -73,12 +73,12 @@ public class WishDB {
         return description;
     }
 
-    public void addWishLink(String wishName, int wishlistId, String link) {
+    public String addWishLink(String wishName, int wishlistId, String link) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_WISH_LINK_QUERY)) {
 
             preparedStatement.setString(1, link);
-            preparedStatement.setString(1, wishName);
+            preparedStatement.setString(2, wishName);
             preparedStatement.setInt(3, wishlistId);
 
             int rowsInserted = preparedStatement.executeUpdate();
@@ -90,14 +90,15 @@ public class WishDB {
         } catch (SQLException e) {
             System.err.println("Ошибка при добавлении ссылки на желание: " + e.getMessage());
         }
+        return link;
     }
 
-    public void addWishPriority(String wishName, int wishlistId, WishPriority priority) {
+    public WishPriority addWishPriority(String wishName, int wishlistId, WishPriority priority) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_WISH_PRIORITY_QUERY)) {
 
             preparedStatement.setString(1, priority.getPriority());
-            preparedStatement.setString(1, wishName);
+            preparedStatement.setString(2, wishName);
             preparedStatement.setInt(3, wishlistId);
 
             int rowsInserted = preparedStatement.executeUpdate();
@@ -109,6 +110,7 @@ public class WishDB {
         } catch (SQLException e) {
             System.err.println("Ошибка при добавлении приоритетности желания: " + e.getMessage());
         }
+        return priority;
     }
 
     public void removeWish(String wishName, int wishlistId) {

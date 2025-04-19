@@ -1,16 +1,22 @@
 package service.wish.imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import db.WishDB;
+import entity.Wish;
 import entity.WishPriority;
 import service.wish.DBAddWishService;
 import util.UtilInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class WishServiceDB implements DBAddWishService {
     private final WishDB wishDB = WishDB.INSTANCE;
     public static final WishServiceDB INSTANCE = new WishServiceDB();
+    private String currentWishName;
 
     private WishServiceDB() {}
 
@@ -29,9 +35,10 @@ public class WishServiceDB implements DBAddWishService {
     }
 
     @Override
-    public void addPriority(int wishlistId) {
+    public WishPriority addPriority(int wishlistId) {
         System.out.println("Введите название желания, которому хотите добавить приоритет");
         String wishName = UtilInput.getRequiredStringFromUser();
+        currentWishName = wishName;
         System.out.println("Выберите приоритет");
         List<WishPriority> prioritiesList = new ArrayList<>(
                 List.of(WishPriority.ONE,
@@ -40,46 +47,61 @@ public class WishServiceDB implements DBAddWishService {
                         WishPriority.FOUR,
                         WishPriority.FIVE)
         );
-        for (WishPriority priority : prioritiesList) {
-            System.out.println(priority.getPriority());
+        for (int i = 0; i < prioritiesList.size(); i++) {
+            WishPriority priority = prioritiesList.get(i);
+            System.out.println(i+1 + ". " + priority.getPriority());
         }
         int userChoice = UtilInput.getRequiredIntFromUser(1, prioritiesList.size());
         switch (userChoice) {
             case 1:
-                wishDB.addWishPriority(wishName, wishlistId, WishPriority.ONE);
-                break;
+                return wishDB.addWishPriority(wishName, wishlistId, WishPriority.ONE);
             case 2:
-                wishDB.addWishPriority(wishName, wishlistId, WishPriority.TWO);
-                break;
+                return wishDB.addWishPriority(wishName, wishlistId, WishPriority.TWO);
             case 3:
-                wishDB.addWishPriority(wishName, wishlistId, WishPriority.THREE);
-                break;
+                return wishDB.addWishPriority(wishName, wishlistId, WishPriority.THREE);
             case 4:
-                wishDB.addWishPriority(wishName, wishlistId, WishPriority.FOUR);
-                break;
+                return wishDB.addWishPriority(wishName, wishlistId, WishPriority.FOUR);
             case 5:
-                wishDB.addWishPriority(wishName, wishlistId, WishPriority.FIVE);
-                break;
+                return wishDB.addWishPriority(wishName, wishlistId, WishPriority.FIVE);
             default:
                 break;
         }
+        return null;
     }
 
     @Override
     public String addDescription(int wishlistId) {
         System.out.println("Введите название желания, которому хотите добавить описание");
         String wishName = UtilInput.getRequiredStringFromUser();
+        currentWishName = wishName;
         System.out.println("Напишите описание");
         String description = UtilInput.getRequiredStringFromUser();
         return wishDB.addWishDescription(wishName, wishlistId, description);
     }
 
     @Override
-    public void addWishLink(int wishlistId) {
+    public String addWishLink(int wishlistId) {
         System.out.println("Введите название желания, которому хотите добавить ссылку");
         String wishName = UtilInput.getRequiredStringFromUser();
         System.out.println("Напишите ссылку");
         String link = UtilInput.getRequiredStringFromUser();
-        wishDB.addWishLink(wishName, wishlistId, link);
+        return wishDB.addWishLink(wishName, wishlistId, link);
+    }
+
+    public Optional<Wish> findWishInWishlist(String wishlist, String wishName) throws JsonProcessingException {
+        if(wishlist != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
+            for (Wish wish : wishes) {
+                if(wish.getWish_name().equals(wishName)) {
+                    return Optional.of(wish);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public String getCurrentWishName() {
+        return currentWishName;
     }
 }
