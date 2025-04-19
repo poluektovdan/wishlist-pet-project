@@ -14,9 +14,14 @@ public class CommandAddWishDescription extends AbstractCommand {
 
     @Override
     public boolean execute() throws JsonProcessingException {
-        int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
-        String wishDescription = getWishServiceDB().addDescription(wishlistId);
-        getWishlistServiceDB().updateDescriptionOfWish(wishlistId, wishDescription, getWishServiceDB().getCurrentWishName());
+        try{
+            int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
+            String wishDescription = getWishServiceDB().addDescription(wishlistId);
+            getWishlistServiceDB().updateDescriptionOfWish(wishlistId, wishDescription, getWishServiceDB().getCurrentWishName());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return true;
     }
 }

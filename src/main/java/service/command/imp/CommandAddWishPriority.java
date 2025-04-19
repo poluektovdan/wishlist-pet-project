@@ -13,9 +13,14 @@ public class CommandAddWishPriority extends AbstractCommand {
 
     @Override
     public boolean execute() throws JsonProcessingException {
-        int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
-        WishPriority priority = getWishServiceDB().addPriority(wishlistId);
-        getWishlistServiceDB().updatePriorityOfWish(wishlistId, getWishServiceDB().getCurrentWishName(), priority);
+        try {
+            int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
+            WishPriority priority = getWishServiceDB().addPriority(wishlistId);
+            getWishlistServiceDB().updatePriorityOfWish(wishlistId, getWishServiceDB().getCurrentWishName(), priority);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return true;
     }
 }

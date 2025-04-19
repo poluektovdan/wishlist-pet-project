@@ -22,7 +22,7 @@ public class WishServiceDB implements DBAddWishService {
 
     @Override
     public String createWish(int wishlistId) {
-        System.out.println("Введите название");
+        System.out.println("Введите название желания");
         String wishName = UtilInput.getRequiredStringFromUser();
         return wishDB.createWish(wishName, wishlistId);
     }

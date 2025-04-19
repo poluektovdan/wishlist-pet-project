@@ -12,9 +12,14 @@ public class CommandCreateWish extends AbstractCommand {
 
     @Override
     public boolean execute() throws JsonProcessingException {
-        int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
-        String wishName = getWishServiceDB().createWish(wishlistId);
-        getWishlistServiceDB().updateWishesInWishlist(wishlistId, wishName);
+        try {
+            int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
+            String wishName = getWishServiceDB().createWish(wishlistId);
+            getWishlistServiceDB().updateWishesInWishlist(wishlistId, wishName);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return true;
     }
 }

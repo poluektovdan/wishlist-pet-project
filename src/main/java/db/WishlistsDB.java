@@ -105,7 +105,7 @@ public class WishlistsDB {
                 return resultSet.getInt(1)>0;
             }
         } catch (SQLException e) {
-            System.err.println("Ошибка при удалении вишлиста: " + e.getMessage());
+            System.err.println("Ошибка при поиске вишлиста: " + e.getMessage());
         }
 
         return false;

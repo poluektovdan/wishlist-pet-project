@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import db.WishlistsDB;
 import entity.Wish;
 import entity.WishPriority;
+import exception.WishlistNotFoundException;
 import service.wishlist.DBWishlistService;
 import util.UtilInput;
 
@@ -49,7 +50,11 @@ public class WishlistServiceDB implements DBWishlistService {
     public int findWishlistId(int userId) {
         System.out.println("Введите название вишлиста, в который вы хотите добавить желание");
         String wishlistName = UtilInput.getRequiredStringFromUser();
-        return wishlistsDB.findWishlistId(wishlistName, userId);
+        if(findWishlist(wishlistName, userId)) {
+            return wishlistsDB.findWishlistId(wishlistName, userId);
+        } else {
+            throw new WishlistNotFoundException("Такого вишлиста не существует");
+        }
     }
 
     @Override
