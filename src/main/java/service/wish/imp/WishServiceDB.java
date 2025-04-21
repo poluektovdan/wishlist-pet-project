@@ -35,9 +35,7 @@ public class WishServiceDB implements DBAddWishService {
     }
 
     @Override
-    public WishPriority addPriority(int wishlistId) {
-        System.out.println("Введите название желания, которому хотите добавить приоритет");
-        String wishName = UtilInput.getRequiredStringFromUser();
+    public WishPriority addPriority(int wishlistId, String wishName) {
         currentWishName = wishName;
         System.out.println("Выберите приоритет");
         List<WishPriority> prioritiesList = new ArrayList<>(
@@ -70,19 +68,14 @@ public class WishServiceDB implements DBAddWishService {
     }
 
     @Override
-    public String addDescription(int wishlistId) {
-        System.out.println("Введите название желания, которому хотите добавить описание");
-        String wishName = UtilInput.getRequiredStringFromUser();
-        currentWishName = wishName;
+    public String addDescription(int wishlistId, String wishName) {
         System.out.println("Напишите описание");
         String description = UtilInput.getRequiredStringFromUser();
         return wishDB.addWishDescription(wishName, wishlistId, description);
     }
 
     @Override
-    public String addWishLink(int wishlistId) {
-        System.out.println("Введите название желания, которому хотите добавить ссылку");
-        String wishName = UtilInput.getRequiredStringFromUser();
+    public String addWishLink(int wishlistId, String wishName) {
         System.out.println("Напишите ссылку");
         String link = UtilInput.getRequiredStringFromUser();
         return wishDB.addWishLink(wishName, wishlistId, link);

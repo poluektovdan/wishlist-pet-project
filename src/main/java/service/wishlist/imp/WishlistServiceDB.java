@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import db.WishlistsDB;
 import entity.Wish;
 import entity.WishPriority;
+import exception.NoWishesInWishlist;
+import exception.NoWishlistException;
+import exception.WishAlreadyExistsException;
 import exception.WishlistNotFoundException;
 import service.wishlist.DBWishlistService;
 import util.UtilInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class WishlistServiceDB implements DBWishlistService {
     private final WishlistsDB wishlistsDB = WishlistsDB.INSTANCE;
@@ -47,9 +51,25 @@ public class WishlistServiceDB implements DBWishlistService {
     }
 
     @Override
-    public int findWishlistId(int userId) {
-        System.out.println("Введите название вишлиста, в который вы хотите добавить желание");
-        String wishlistName = UtilInput.getRequiredStringFromUser();
+    public Optional<Integer> findWishlistId(int userId) {
+        String wishlistName = null;
+        List<String> wishlistsList = wishlistsDB.getWishlistsList(userId);
+        if(wishlistsList.isEmpty()) {
+            throw new NoWishlistException("У вас нет ни одного вишлиста, создайте хотя бы 1");
+        }
+
+        System.out.println("Выберите вишлист");
+
+        for (int i = 0; i < wishlistsList.size(); i++) {
+            System.out.println(i + ". " + wishlistsList.get(i));
+        }
+        int userChoice = UtilInput.getRequiredIntFromUser(0,wishlistsList.size());
+
+        for (String string : wishlistsList) {
+            if (string.equals(wishlistsList.get(userChoice))) {
+                wishlistName = string;
+            }
+        }
         if(findWishlist(wishlistName, userId)) {
             return wishlistsDB.findWishlistId(wishlistName, userId);
         } else {
@@ -60,7 +80,7 @@ public class WishlistServiceDB implements DBWishlistService {
     @Override
     public void updateWishesInWishlist(int wishlistID, String wishName) throws JsonProcessingException {
         String wishlist = getWishlist(wishlistID);
-        if(wishlist != null) {
+        if(wishlist != null && !wishlist.isEmpty()) {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Wish> wishes = objectMapper.readValue(wishlist, new TypeReference<List<Wish>>() {});
             Wish wish = new Wish(wishName);
@@ -68,7 +88,7 @@ public class WishlistServiceDB implements DBWishlistService {
                 wishes.add(wish);
                 wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
             } else {
-                System.out.println("Такой виш уже существует");
+                throw new WishAlreadyExistsException("Такое желание уже существует");
             }
         } else {
             wishlistsDB.updateWishesInWishlist(initializeNewWishlist(wishName), wishlistID);
@@ -126,5 +146,9 @@ public class WishlistServiceDB implements DBWishlistService {
             }
             wishlistsDB.updateWishesInWishlist(wishes, wishlistID);
         }
+    }
+
+    public Optional<List<Wish>> getWishlistAsList(int wishlistID) {
+        return wishlistsDB.getWishlistAsList(wishlistID);
     }
 }

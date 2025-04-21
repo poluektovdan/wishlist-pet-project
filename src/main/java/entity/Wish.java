@@ -72,6 +72,16 @@ public class Wish {
         return Objects.hashCode(wish_name);
     }
 
+    @Override
+    public String toString() {
+        return "Wish{" +
+                "wish_name='" + wish_name + '\'' +
+                ", wish_description='" + wish_description + '\'' +
+                ", wish_link='" + wish_link + '\'' +
+                ", priority=" + priority +
+                '}';
+    }
+
     //что будет у виша?
     //добавить описание, добавить ссылку на виш, добавить приоритетность
     //редактировать виш - редактировать имя, описание, ссылку, приоритетность

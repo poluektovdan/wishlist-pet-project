@@ -20,7 +20,6 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
                     CommandEditWish.INSTANCE,
                     CommandShowWishlists.INSTANCE,
                     CommandDeleteWishlist.INSTANCE,
-                    CommandAddWishDescription.INSTANCE,
                     CommandAddUserToFavorites.INSTANCE,
                     CommandExit.INSTANCE));
 
@@ -35,6 +34,8 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
             if (user.isPresent()) {
                 getUserServiceDB().setUserId(user.get().getId());
                 startWorkWithUser(user.get().getLogin());
+            } else {
+                execute();
                 return false;
             }
         } catch (Exception e) {

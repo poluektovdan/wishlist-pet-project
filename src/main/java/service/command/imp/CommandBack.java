@@ -12,6 +12,6 @@ public class CommandBack extends AbstractCommand {
 
     @Override
     public boolean execute() throws JsonProcessingException {
-        return false;
+        return true;
     }
 }

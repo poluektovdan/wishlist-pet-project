@@ -11,6 +11,7 @@ public class CommandAddUserToFavorites extends AbstractCommand {
 
     @Override
     public boolean execute() {
+        System.out.println("Этот функционал будет добавлен позже");
         return true;
     }
 }

@@ -16,6 +16,8 @@ public class CommandRegisterUser extends AbstractCommand {
                 System.out.println("Вы успешно зарегестрированы!");
                 System.out.println("Войдите в личный кабинет");
                 CommandLoginUser.INSTANCE.execute();
+            } else {
+                execute();
                 return false;
             }
         } catch (Exception e) {

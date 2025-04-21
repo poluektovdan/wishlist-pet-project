@@ -2,6 +2,7 @@ package service.user.imp;
 
 import db.UsersDB;
 import entity.User;
+import exception.UserAlreadyExistsException;
 import exception.UserNotFoundException;
 import service.user.DBWorkingUserService;
 import util.UtilInput;
@@ -26,7 +27,8 @@ public class UserServiceDB implements DBWorkingUserService {
         if (usersDB.findUser(login, password)) {
             return Optional.of(new User(usersDB.findUserId(login), login, password));
         } else {
-            throw new UserNotFoundException("Не верный логин или пароль");
+            System.out.println("Не верный логин или пароль");
+            return Optional.empty();
         }
     }
 
@@ -34,15 +36,15 @@ public class UserServiceDB implements DBWorkingUserService {
     public Optional<User> registerUser() {
         System.out.println("Введите логин");
         String login = UtilInput.getRequiredStringFromUser();
+        if(getUserByLogin(login)) {
+            System.out.println("Такой пользователь уже существует, придумайте другой логин");
+            return Optional.empty();
+        }
+
         System.out.println("Введите пароль");
         String password = UtilInput.getRequiredStringFromUser();
-        if(getUserByLogin(login)) {
-            System.out.println("Такой пользователь уже существует");
-            return Optional.empty();
-        } else {
-            usersDB.addUser(login, password);
-            return Optional.of(new User(usersDB.findUserId(login), login, password));
-        }
+        usersDB.addUser(login, password);
+        return Optional.of(new User(usersDB.findUserId(login), login, password));
     }
 
     @Override

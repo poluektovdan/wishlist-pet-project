@@ -1,7 +1,12 @@
 package service.command.imp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import entity.Wish;
+import exception.NoWishesInWishlist;
 import service.command.AbstractCommand;
+
+import java.util.List;
+import java.util.Optional;
 
 public class CommandCreateWish extends AbstractCommand {
     public static final CommandCreateWish INSTANCE = new CommandCreateWish();
@@ -13,9 +18,11 @@ public class CommandCreateWish extends AbstractCommand {
     @Override
     public boolean execute() throws JsonProcessingException {
         try {
-            int wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
-            String wishName = getWishServiceDB().createWish(wishlistId);
-            getWishlistServiceDB().updateWishesInWishlist(wishlistId, wishName);
+            Optional<Integer> wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
+            if (wishlistId.isPresent()) {
+                String wishName = getWishServiceDB().createWish(wishlistId.get());
+                getWishlistServiceDB().updateWishesInWishlist(wishlistId.get(), wishName);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
