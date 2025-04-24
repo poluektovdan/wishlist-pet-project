@@ -16,7 +16,7 @@
 		<li style="font-size: 14px; font-weight: 400;">View - взоимодействие с пользователем и вводимыми им данными через консоль</li>
 		<li style="font-size: 14px; font-weight: 400;">Controller — сервисы, отвечающие за:
 		        <ul>
-		          <li style="font-size: 14px; font-weight: 400;">работу с БД (получение данных от пользование и взаимодействие с этими данными)</li>
+		          <li style="font-size: 14px; font-weight: 400;">работу с БД (получение данных от пользователя и взаимодействие с этими данными, в т.ч. отображение view, соответствующего полученным данным)</li>
 		          <li style="font-size: 14px; font-weight: 400;">валидацию и обработку данных, вводимых пользователем</li>
 		          <li style="font-size: 14px; font-weight: 400;">реализацию бизнес-логики</li>
 		          <li style="font-size: 14px; font-weight: 400;">отлавливание ошибок</li>
