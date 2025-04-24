@@ -7,7 +7,7 @@
 <ul>
 	<li style="font-size: 15px; font-weight: 500;">Построение приложения по принципу MVC</li>
 	<ul>
-		<li style="font-size: 14px; font-weight: 400;">Model - 
+		<li style="font-size: 14px; font-weight: 400;">Model
 			<ul>
 			  <li style="font-size: 14px; font-weight: 400;">классы, описывающие работу с БД</li>
 			  <li style="font-size: 14px; font-weight: 400;">классы-Entity</li>
