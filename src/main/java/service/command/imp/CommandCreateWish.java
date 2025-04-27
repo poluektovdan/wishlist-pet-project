@@ -1,11 +1,11 @@
 package service.command.imp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import entity.Wish;
-import exception.NoWishesInWishlist;
+import exception.NoWishlistException;
+import exception.WishAlreadyExistsException;
+import exception.WishlistNotFoundException;
 import service.command.AbstractCommand;
 
-import java.util.List;
 import java.util.Optional;
 
 public class CommandCreateWish extends AbstractCommand {
@@ -23,7 +23,7 @@ public class CommandCreateWish extends AbstractCommand {
                 String wishName = getWishServiceDB().createWish(wishlistId.get());
                 getWishlistServiceDB().updateWishesInWishlist(wishlistId.get(), wishName);
             }
-        } catch (Exception e) {
+        } catch (NoWishlistException | WishlistNotFoundException | WishAlreadyExistsException e) {
             System.out.println(e.getMessage());
         }
 

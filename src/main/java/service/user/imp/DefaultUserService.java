@@ -8,7 +8,7 @@ import service.user.StartWorkingNewUserService;
 import java.util.List;
 
 public class DefaultUserService implements StartWorkingNewUserService, ChooseCommand {
-    private List<Command> commandList;
+    private final List<Command> commandList;
 
     public DefaultUserService(List<Command> commandList) {
         this.commandList = commandList;

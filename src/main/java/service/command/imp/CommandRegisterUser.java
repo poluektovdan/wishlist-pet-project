@@ -1,5 +1,6 @@
 package service.command.imp;
 
+import exception.UserAlreadyExistsException;
 import service.command.AbstractCommand;
 
 public class CommandRegisterUser extends AbstractCommand {
@@ -18,11 +19,11 @@ public class CommandRegisterUser extends AbstractCommand {
                 CommandLoginUser.INSTANCE.execute();
             } else {
                 execute();
-                return false;
             }
-        } catch (Exception e) {
+            return false;
+        } catch (UserAlreadyExistsException e) {
             System.out.println(e.getMessage());
+            return true;
         }
-        return true;
     }
 }

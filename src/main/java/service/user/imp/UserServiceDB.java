@@ -15,10 +15,11 @@ public class UserServiceDB implements DBWorkingUserService {
 
     private int userId;
 
-    private UserServiceDB() {}
+    private UserServiceDB() {
+    }
 
     @Override
-    public Optional<User> login() {
+    public Optional<User> login() throws UserNotFoundException {
         System.out.println("Введите логин");
         String login = UtilInput.getRequiredStringFromUser();
         System.out.println("Введите пароль");
@@ -27,18 +28,17 @@ public class UserServiceDB implements DBWorkingUserService {
         if (usersDB.findUser(login, password)) {
             return Optional.of(new User(usersDB.findUserId(login), login, password));
         } else {
-            System.out.println("Не верный логин или пароль");
-            return Optional.empty();
+            throw new UserNotFoundException("Не верный логин или пароль");
         }
     }
 
     @Override
-    public Optional<User> registerUser() {
+    public Optional<User> registerUser() throws UserAlreadyExistsException {
         System.out.println("Введите логин");
         String login = UtilInput.getRequiredStringFromUser();
-        if(getUserByLogin(login)) {
-            System.out.println("Такой пользователь уже существует, придумайте другой логин");
-            return Optional.empty();
+
+        if (getUserByLogin(login)) {
+            throw new UserAlreadyExistsException("Такой пользователь уже существует, придумайте другой логин");
         }
 
         System.out.println("Введите пароль");

@@ -1,6 +1,7 @@
 package exception;
 
-public class WishAlreadyExistsException extends RuntimeException {
+public class WishAlreadyExistsException extends Exception {
+    public WishAlreadyExistsException() {}
     public WishAlreadyExistsException(String message) {
         super(message);
     }

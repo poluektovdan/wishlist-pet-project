@@ -1,13 +1,11 @@
 package service.command.imp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import entity.Wish;
-import exception.NoWishesInWishlist;
+import exception.NoWishlistException;
+import exception.WishlistNotFoundException;
 import service.command.AbstractCommand;
 import service.wish.ChooseWish;
-import util.UtilInput;
 
-import java.util.List;
 import java.util.Optional;
 
 public class CommandAddWishDescription extends AbstractCommand implements ChooseWish {
@@ -23,15 +21,11 @@ public class CommandAddWishDescription extends AbstractCommand implements Choose
         try{
             Optional<Integer> wishlistId = getWishlistServiceDB().findWishlistId(getUserServiceDB().getUserId());
             if(wishlistId.isPresent()) {
-                Optional<List<Wish>> wishes = getWishlistServiceDB().getWishlistAsList(wishlistId.get());
-                if(wishes.isEmpty()) {
-                    throw new NoWishesInWishlist("В вашем вишлисте нет желаний, добавьте хотя бы одно");
-                }
-                String currentWishName = getWishes(getWishlistServiceDB(), wishlistId.get());
+                String currentWishName = getWishes(getWishlistServiceDB(), wishlistId.get(), "описание");
                 String wishDescription = getWishServiceDB().addDescription(wishlistId.get(), currentWishName);
                 getWishlistServiceDB().updateDescriptionOfWish(wishlistId.get(), wishDescription, currentWishName);
             }
-        } catch (Exception e) {
+        } catch (NoWishlistException | WishlistNotFoundException e) {
             System.out.println(e.getMessage());
         }
 

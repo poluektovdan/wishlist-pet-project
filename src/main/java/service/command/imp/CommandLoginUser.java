@@ -2,6 +2,8 @@ package service.command.imp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import entity.User;
+import exception.NoWishesInWishlistException;
+import exception.UserNotFoundException;
 import service.command.AbstractCommand;
 import service.command.Command;
 import service.user.StartWorkingLogginedUserService;
@@ -36,16 +38,16 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
                 startWorkWithUser(user.get().getLogin());
             } else {
                 execute();
-                return false;
             }
-        } catch (Exception e) {
+            return false;
+        } catch (UserNotFoundException | JsonProcessingException | NoWishesInWishlistException e) {
             System.out.println(e.getMessage());
+            return true;
         }
-        return true;
     }
 
     @Override
-    public void startWorkWithUser(String login) throws JsonProcessingException {
+    public void startWorkWithUser(String login) throws JsonProcessingException, NoWishesInWishlistException {
         System.out.println("Привет, " + login);
         boolean isWorking = chooseCommand();
         while (isWorking) {
@@ -53,7 +55,7 @@ public class CommandLoginUser extends AbstractCommand implements StartWorkingLog
         }
     }
 
-    private boolean chooseCommand() throws JsonProcessingException {
+    private boolean chooseCommand() throws JsonProcessingException, NoWishesInWishlistException {
         System.out.println("Выбери команду, которую хочешь выполнить");
         for (int i = 1; i <= commandList.size(); i++) {
             System.out.printf("%s - %s%n", i, commandList.get(i - 1).getCommandName());

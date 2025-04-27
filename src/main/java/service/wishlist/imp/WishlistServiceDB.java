@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import db.WishlistsDB;
 import entity.Wish;
 import entity.WishPriority;
-import exception.NoWishesInWishlist;
+import exception.NoWishesInWishlistException;
 import exception.NoWishlistException;
 import exception.WishAlreadyExistsException;
 import exception.WishlistNotFoundException;
@@ -51,7 +51,7 @@ public class WishlistServiceDB implements DBWishlistService {
     }
 
     @Override
-    public Optional<Integer> findWishlistId(int userId) {
+    public Optional<Integer> findWishlistId(int userId) throws NoWishlistException, WishlistNotFoundException {
         String wishlistName = null;
         List<String> wishlistsList = wishlistsDB.getWishlistsList(userId);
         if(wishlistsList.isEmpty()) {
@@ -61,12 +61,12 @@ public class WishlistServiceDB implements DBWishlistService {
         System.out.println("Выберите вишлист");
 
         for (int i = 0; i < wishlistsList.size(); i++) {
-            System.out.println(i + ". " + wishlistsList.get(i));
+            System.out.println(i+1 + ". " + wishlistsList.get(i));
         }
-        int userChoice = UtilInput.getRequiredIntFromUser(0,wishlistsList.size());
+        int userChoice = UtilInput.getRequiredIntFromUser(1,wishlistsList.size());
 
         for (String string : wishlistsList) {
-            if (string.equals(wishlistsList.get(userChoice))) {
+            if (string.equals(wishlistsList.get(userChoice-1))) {
                 wishlistName = string;
             }
         }
@@ -78,7 +78,7 @@ public class WishlistServiceDB implements DBWishlistService {
     }
 
     @Override
-    public void updateWishesInWishlist(int wishlistID, String wishName) throws JsonProcessingException {
+    public void updateWishesInWishlist(int wishlistID, String wishName) throws JsonProcessingException, WishAlreadyExistsException {
         String wishlist = getWishlist(wishlistID);
         if(wishlist != null && !wishlist.isEmpty()) {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -148,7 +148,10 @@ public class WishlistServiceDB implements DBWishlistService {
         }
     }
 
-    public Optional<List<Wish>> getWishlistAsList(int wishlistID) {
+    public Optional<List<Wish>> getWishlistAsList(int wishlistID) throws NoWishesInWishlistException {
+        if(wishlistsDB.getWishlistAsList(wishlistID).isPresent() && wishlistsDB.getWishlistAsList(wishlistID).get().isEmpty()) {
+            throw new NoWishesInWishlistException("В вашем вишлисте нет желаний, добавьте хотя бы одно");
+        }
         return wishlistsDB.getWishlistAsList(wishlistID);
     }
 }
